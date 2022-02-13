@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopapp/bloc/shoplayoutcubit.dart';
 import 'package:shopapp/bloc/states/shoplayoutstate.dart';
 import 'package:shopapp/screen/login.dart';
+import 'package:shopapp/screen/search.dart';
 import 'package:shopapp/shared/network/component.dart';
 import 'package:shopapp/shared/network/remote.dart';
 
@@ -20,16 +21,15 @@ class Shoplayout1 extends StatelessWidget {
               title: const Text('salla'),
               actions: [
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    navigateTo(context: context, widget: search());
+                  },
                   child: const Icon(
                     Icons.search_rounded,
                   ),
                 ),
                 MaterialButton(
-                  onPressed: () {
-                    Catchelper.removedata(key: 'token');
-                    navigateAndFinish(context: context, widget: Loginscreen());
-                  },
+                  onPressed: () {},
                   child: const Icon(Icons.logout_outlined),
                 )
               ],

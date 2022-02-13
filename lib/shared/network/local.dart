@@ -38,4 +38,19 @@ class Diohleper {
     };
     return await dio.post(url, queryParameters: quary, data: data);
   }
+
+  static Future<Response> putdata({
+    required String url,
+    Map<String, dynamic>? quary,
+    required Map<String, dynamic> data,
+    String lang = "en",
+    String? token,
+  }) async {
+    dio.options.headers = {
+      'lang': lang,
+      'Authorization': token ?? '',
+      'Content-Type': 'application/json',
+    };
+    return await dio.put(url, queryParameters: quary, data: data);
+  }
 }

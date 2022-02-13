@@ -7,6 +7,7 @@ import 'package:shopapp/bloc/cubitlogin.dart';
 import 'package:shopapp/bloc/states/states.dart';
 import 'package:shopapp/screen/register.dart';
 import 'package:shopapp/screen/shoplayout.dart';
+import 'package:shopapp/shared/constance.dart';
 import 'package:shopapp/shared/network/component.dart';
 import 'package:shopapp/shared/network/remote.dart';
 
@@ -29,6 +30,7 @@ class Loginscreen extends StatelessWidget {
             Catchelper.savedata(
                     key: 'token', value: state.loginmodel!.data!.token)
                 .then((value) {
+              token = state.loginmodel!.data!.token;
               navigateAndFinish(context: context, widget: const Shoplayout1());
             });
           } else {
@@ -40,7 +42,43 @@ class Loginscreen extends StatelessWidget {
       }, builder: (context, state) {
         var cubit = Applogincubit.get(context);
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(2500),
+            )),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(150),
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 2, 70),
+                  child: Row(children: const [
+                    Text(
+                      'welcome ',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 27,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(5, 10, 0, 5),
+                        child: Icon(
+                          Icons.supervised_user_circle_sharp,
+                          color: Colors.blue,
+                        )),
+                    // Padding(
+                    //   padding: EdgeInsets.fromLTRB(33, 8, 0, 0),
+                    //   child: IconButton(
+                    //     onPressed: () {
+                    //
+                    //     },
+                    //     icon: Icon(Icons.menu, color:mycolor1 ,)),
+                    // )
+                  ])),
+            ),
+          ),
           body: Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -146,7 +184,7 @@ class Loginscreen extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               navigateAndFinish(
-                                  context: context, widget: const register());
+                                  context: context, widget: register());
                             },
                             child: const Text('register'),
                           ),

@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +7,7 @@ import 'package:shopapp/bloc/shoplayoutcubit.dart';
 import 'package:shopapp/bloc/states/shoplayoutstate.dart';
 import 'package:shopapp/models/categorymodel.dart';
 import 'package:shopapp/models/homemmodel.dart';
+import 'package:shopapp/shared/network/component.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -16,19 +15,23 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<Shoplayoutcubit, Shoplayoutstates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          var cubit = Shoplayoutcubit.get(context);
-          return Scaffold(
-            body: ConditionalBuilder(
-                condition:
-                    cubit.homemodel != null && cubit.categorymodel != null,
-                builder: (context) =>
-                    bannerdata(cubit.homemodel, cubit.categorymodel, context),
-                fallback: (context) =>
-                    const Center(child: CircularProgressIndicator())),
-          );
-        });
+        listener: (context, state) {
+      if (state is Changefaviourtsuccessstate) {
+        if (state.model!.status!) {
+          showtoast(text: "${state.model!.message}", state: toaststate.error);
+        }
+      }
+    }, builder: (context, state) {
+      var cubit = Shoplayoutcubit.get(context);
+      return Scaffold(
+        body: ConditionalBuilder(
+            condition: cubit.homemodel != null && cubit.categorymodel != null,
+            builder: (context) =>
+                bannerdata(cubit.homemodel, cubit.categorymodel, context),
+            fallback: (context) =>
+                const Center(child: CircularProgressIndicator())),
+      );
+    });
   }
 
   Widget bannerdata(Homemodel? model, Categorymodel? categorymodel, context) {
@@ -170,15 +173,18 @@ class Home extends StatelessWidget {
                   MaterialButton(
                     minWidth: 20.0,
                     onPressed: () {
-                      cubit.changefaviourit(model.id!);
                       print(model.id);
+                      cubit.changefaviourit(model.id!);
                     },
                     child: CircleAvatar(
                       radius: 15.0,
-                      backgroundColor:
-                          cubit.favoruit[model.id]! ? Colors.blue : Colors.grey,
-                      child: const Icon(
-                        Icons.favorite_outline_rounded,
+                      backgroundColor: cubit.favorites[model.id]!
+                          ? Colors.deepOrange
+                          : Colors.grey[200],
+                      child: Icon(
+                        cubit.favorites[model.id]!
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         size: 19.0,
                         color: Colors.blue,
                       ),
